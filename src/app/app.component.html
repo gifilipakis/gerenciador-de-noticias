@@ -1,107 +1,135 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<ul class="nav">
-    <li class="nav-item">
-      <a class="nav-link active" (click)="telaInicial()">Início</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" (click)="telaCadastro()">Cadastrar</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" (click)="telaSalvas()">Publicar</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" (click)="telaEstatisticas()">Estatísticas</a>
-    </li>
-  </ul>
-
-<section *ngIf="tela == 'inicial'">
-  <h1>Notícias</h1>
-  <div>
-    <ul>
-      <li *ngFor= "let publicada of service.publicadas">{{publicada.titulo}} <button class="btn btn-primary" (click)="ler(publicada)">Ler</button></li>
-    </ul>
-  </div>
-  <button class="btn btn-primary" (click)="telaSalvas()">Publicar</button>
-</section>
-
-<section *ngIf="tela == 'ler'">
-  <div>
-    <h1>{{visualizar.titulo}}</h1>
-    <h3>Autor: {{visualizar.autor}}</h3>
-    <p>{{visualizar.conteudo}}</p>
-  </div>
-</section>
-
-<section *ngIf="tela == 'cadastro'">
-  <h1>Cadastro</h1>
-  <form #cadastro="ngForm">
-    <div class="form-group">
-      <label for="nome">Autor</label>
-      <select class="form-control" name="autor" id="autor" [(ngModel)]="autor" required>
-        <option *ngFor="let a of service.autores">{{a}}</option>
-      </select>
-    </div>
-    <div class="form-group">
-        <label for="nome">Título</label>
-        <input type="text" class="form-control" id="titulo" name="titulo" [(ngModel)]="titulo" required>
-      </div>
-    <div class="form-group">
-      <label for="nome">Conteúdo</label>
-      <textarea class="form-control" id="conteudo" name="conteudo" [(ngModel)]="conteudo" required></textarea>
-    </div>
-    <button class="btn btn-primary" (click)="salvar()" [disabled]="!cadastro.form.valid">Salvar</button>
-  </form>
-</section>
-
-<section *ngIf="tela == 'salvas'">
-  <h1>Notícias Salvas</h1>
-  <div>
-    <ul>
-      <li *ngFor= "let noticia of service.noticias">
-        {{noticia.titulo}} <button class="btn btn-primary" (click)="service.publicar(noticia)">Publicar</button>
+<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:700" rel="stylesheet">
+<section class="section-nav">
+  <div class="container">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link active" (click)="telaInicial()">Início</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" (click)="telaCadastro()">Cadastrar</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" (click)="telaSalvas()">Publicar</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" (click)="telaEstatisticas()">Estatísticas</a>
       </li>
     </ul>
   </div>
 </section>
 
+<section *ngIf="tela == 'inicial'">
+  <div class="container noticias">
+    <h1>Notícias</h1>
+    <div>
+      <ul>
+        <li *ngFor= "let publicada of service.publicadas">{{publicada.titulo}} <button class="btn btn-primary" (click)="ler(publicada)">Ler</button></li>
+      </ul>
+    </div>
+    <button class="btn btn-primary" (click)="telaSalvas()">Publicar</button>
+  </div>
+</section>
+
+<section *ngIf="tela == 'ler'">
+  <div class="container ler">
+    <div>
+      <h2>{{visualizar.titulo}}</h2>
+      <h6>Autor(a): {{visualizar.autor}}</h6>
+      <img src={{visualizar.img}}>
+    </div>
+    <div>
+      <p>{{visualizar.conteudo}}</p>
+    </div>
+    <button class="btn btn-primary" (click)="telaVoltar()">Voltar</button>
+  </div>
+</section>
+
+<section *ngIf="tela == 'cadastro'">
+  <div class="container">
+    <h1>Cadastro</h1>
+    <form #cadastro="ngForm">
+      <div class="form-group">
+        <label for="nome">Autor</label>
+        <select class="form-control" name="autor" id="autor" [(ngModel)]="autor" required>
+          <option *ngFor="let a of service.autores">{{a}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+          <label for="nome">Título</label>
+          <input type="text" class="form-control" id="titulo" name="titulo" [(ngModel)]="titulo" required>
+        </div>
+      <div class="form-group">
+        <label for="nome">Conteúdo</label>
+        <textarea class="form-control" id="conteudo" name="conteudo" [(ngModel)]="conteudo" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="nome">Link da Imagem</label>
+        <input class="form-control" id="img" name="img" [(ngModel)]="img">
+      </div>
+      <button class="btn btn-primary" (click)="salvar()" [disabled]="!cadastro.form.valid">Salvar</button>
+      <button class="btn btn-primary" (click)="telaVoltar()">Voltar</button>
+    </form>
+  </div>
+</section>
+
+<section *ngIf="tela == 'salvas'">
+  <div class="container">
+    <h1>Notícias Salvas</h1>
+    <div>
+      <ul>
+        <li *ngFor= "let noticia of service.noticias">
+          {{noticia.titulo}} 
+          <button *ngIf = "noticia.publicada == false"  class="btn btn-primary" (click)="service.publicar(noticia)">Publicar</button>
+          <button *ngIf = "noticia.publicada == true"  class="btn btn-primary disabled">Publicada</button>
+        </li>
+      </ul>
+      <button class="btn btn-primary" (click)="telaVoltar()">Voltar</button>
+    </div>
+  </div>
+</section>
+
 <section *ngIf="tela == 'estatisticas'">
-  <h1>Estatísticas</h1>
-  <div>
-    <table>
-      <thead>
-        <th>Nome do Autor</th>
-        <th>Quantidade de Notícias por Autor</th>
-      </thead>
-      <tbody>
-        <tr *ngFor = "let a of service.autores">
-          <td>
-            {{a}}
-          </td>
-          <td>
-            {{service.noticiasPorAutor(a)}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <div class="container">
+    <h1>Estatísticas</h1>
+    <div>
+      <table>
+        <thead>
+          <th>Nome do Autor</th>
+          <th>Quantidade de Notícias por Autor</th>
+        </thead>
+        <tbody>
+          <tr *ngFor = "let a of service.autores">
+            <td>
+              {{a}}
+            </td>
+            <td>
+              {{service.noticiasPorAutor(a)}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <div>
-    <h4>Nome do autor que mais publica notícias:</h4>
-    <p>{{service.autorMaisPublica()}}</p>
-  </div>
+    <div>
+      <h4>Nome do autor que mais publica notícias:</h4>
+      <p>{{service.autorMaisPublica()}}</p>
+    </div>
 
-  <div>
-    <table>
-      <thead>
-        <th>Ranking por quantidade de views</th>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div>
+      <table>
+        <thead>
+          <th>Ranking por quantidade de views</th>
+        </thead>
+        <tbody>
+          <tr *ngFor = "let p of service.noticiaMaisViews()">
+            <td>
+              {{p.titulo}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn btn-primary" (click)="telaVoltar()">Voltar</button>
   </div>
 </section>

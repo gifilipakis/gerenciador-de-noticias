@@ -10,18 +10,21 @@ export class GerenciadorService {
 
   constructor() { }
   
-  salvarNoticia(autor, titulo, conteudo, views){
+  salvarNoticia(autor, titulo, conteudo, views, img, publicada){
     const noticia = {
       id: this.noticias.length,
       titulo: titulo,
       autor: autor,
       conteudo: conteudo,
       views: views,
+      img: img,
+      publicada: publicada,
     }
     this.noticias.push(noticia);
   }
 
   publicar(noticia){
+    noticia.publicada = true;
     this.publicadas.push(noticia);
   }
 
@@ -56,6 +59,13 @@ export class GerenciadorService {
     return autor
   }
 
+  noticiaMaisViews(){
+    var resultado = this.publicadas.sort(function(a,b){ return b.views - a.views }).slice(0,5)
+    if(!resultado){
+      return 0
+    }
+    return resultado
+  }
   
   
 }
