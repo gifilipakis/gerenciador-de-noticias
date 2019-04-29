@@ -48,12 +48,14 @@ export class GerenciadorService {
           qnt++
         }
       }
-      if(qnt > maior_qnt){
+      if(qnt > maior_qnt && a != autor){
         maior_qnt = qnt
         autor = a
       }
     }
     return autor
   }
+
+  
   
 }

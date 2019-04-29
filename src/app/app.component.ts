@@ -46,7 +46,7 @@ export class AppComponent {
 
   ler(publicada){
     publicada.views++;
-    this.tela = 'ler'
+    this.tela = 'ler';
     this.visualizar = publicada
   }
 
